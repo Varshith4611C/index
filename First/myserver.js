@@ -28,11 +28,25 @@ const User = mongoose.model('User', UserSchema);
 // Routes
 app.post('/api/register', async (req, res) => {
   try {
+    console.log('Request body:', req.body);  // Check incoming data
+
     const newUser = new User(req.body);
+
     await newUser.save();
-    res.status(201).send('User created successfully');
+
+    res.status(201).send({ message: 'User created successfully' });
   } catch (error) {
-    res.status(400).send(error.message);
+    console.error('Registration error:', error);
+
+    // Check if it’s a validation error or duplicate key error
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Validation Error: ' + error.message });
+    }
+    if (error.code === 11000) {  // Duplicate key error code from Mongo
+      return res.status(400).json({ message: 'User already exists with this email or username' });
+    }
+
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
 });
 
