@@ -51,12 +51,13 @@
                 });
                 
                 if (response.ok) {
-                    alert('Registration successful!');
-                    document.getElementById('registrationForm').reset();
-                } else {
-                    const errorData = await response.json();
-                    alert(`Error: ${errorData.message || 'Registration failed'}`);
-                }
+  alert('Registration successful!');
+  document.getElementById('registrationForm').reset();
+} else {
+  const errorData = await response.json();
+  alert(`Error: ${errorData.message || 'Registration failed'}`);
+}
+
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred. Please try again.');
